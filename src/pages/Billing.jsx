@@ -102,9 +102,9 @@ export const Billing = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-130px)] lg:h-[calc(100vh-64px)] overflow-y-auto lg:overflow-hidden px-3 py-2 lg:px-6 flex flex-col pb-24 lg:pb-0">
+    <div className="h-[calc(100vh-130px)] lg:h-[calc(100vh-64px)] overflow-y-auto lg:overflow-hidden px-1.5 py-1.5 sm:px-3 lg:px-6 flex flex-col pb-3 lg:pb-0">
       {/* 📱 Mobile Top Screen View Switcher (lg:hidden) */}
-      <div className="lg:hidden flex bg-white p-1.5 rounded-2xl border border-purple-200 shadow-sm mb-3 shrink-0">
+      <div className="lg:hidden flex bg-white p-1 rounded-2xl border border-purple-200 shadow-sm mb-2 shrink-0">
         <button
           onClick={() => setMobileTab('catalog')}
           className={`flex-1 py-2.5 text-xs sm:text-sm font-black rounded-xl transition-all flex items-center justify-center space-x-2 ${
@@ -135,52 +135,51 @@ export const Billing = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 flex-1 min-h-0">
         {/* LEFT COLUMN: CATALOG & PRODUCTS (SCROLLABLE ON MOBILE & DESKTOP) */}
-        <div className={`lg:col-span-7 xl:col-span-8 space-y-3.5 flex-1 overflow-y-auto lg:h-full lg:pr-2 scrollbar-thin bg-slate-100/80 p-3 sm:p-4 rounded-3xl border border-slate-200/90 ${mobileTab === 'catalog' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-7 xl:col-span-8 space-y-3 flex-1 overflow-y-auto lg:h-full lg:pr-2 scrollbar-thin bg-slate-100/80 p-2 sm:p-4 rounded-3xl border border-slate-200/90 ${mobileTab === 'catalog' ? 'block' : 'hidden lg:block'}`}>
         {/* Top Search & Filter Bar */}
-        <div className="bg-white p-3.5 sm:p-4 rounded-3xl shadow-sm border border-purple-100 space-y-3">
+        <div className="bg-white p-2.5 sm:p-4 rounded-3xl shadow-sm border border-purple-100 space-y-3">
           <div className="flex items-center space-x-2">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-3.5" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products by name, Tamil title, or barcode..."
-                className="w-full pl-10 pr-20 py-3 bg-slate-50 border border-purple-200 rounded-2xl text-sm font-medium focus:border-brand-primary focus:bg-white focus:outline-none transition-all shadow-inner"
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-purple-200 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 focus:border-brand-primary focus:outline-none"
               />
-              <div className="absolute right-2 top-2 flex items-center space-x-1">
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('8901001001')}
-                  className="p-1.5 text-slate-500 hover:text-brand-primary hover:bg-purple-100 rounded-xl transition-colors"
-                  title="Simulate Barcode Scan"
-                >
-                  <Barcode className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('Coffee')}
-                  className="p-1.5 text-slate-500 hover:text-brand-primary hover:bg-purple-100 rounded-xl transition-colors"
-                  title="Simulate Voice Search"
-                >
-                  <Mic className="w-4 h-4" />
-                </button>
-              </div>
             </div>
+
+            {/* Barcode Scanner Sim */}
+            <button
+              onClick={() => console.log('Barcode')}
+              className="p-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-brand-primary border border-purple-200 transition-colors"
+              title="Barcode Scanner Mode"
+            >
+              <Barcode className="w-5 h-5" />
+            </button>
+
+            {/* Voice Input Sim */}
+            <button
+              onClick={() => console.log('Voice')}
+              className="p-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-brand-primary border border-purple-200 transition-colors"
+              title="Voice Search"
+            >
+              <Mic className="w-5 h-5" />
+            </button>
 
             {/* Category Filter Popup Menu Button */}
             <button
               type="button"
               onClick={() => setIsCategoryModalOpen(true)}
-              className="py-3 px-3.5 bg-purple-50 hover:bg-purple-100 text-brand-primary border border-purple-200 text-xs sm:text-sm font-black rounded-2xl flex items-center space-x-2 transition-all shadow-xs active:scale-95 shrink-0"
+              className="py-2 px-3 bg-purple-50 hover:bg-purple-100 text-brand-primary border border-purple-200 text-xs sm:text-sm font-black rounded-2xl flex items-center space-x-1.5 transition-all shadow-sm active:scale-95 shrink-0"
               title="Open All Categories Menu Popup"
             >
-              <Filter className="w-4.5 h-4.5 text-brand-primary" />
-              <span className="hidden sm:inline">Categories</span>
-              <span className="bg-brand-primary text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-xs">
+              <Filter className="w-4 h-4 text-brand-primary" />
+              <span className="bg-brand-primary text-white text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-xs">
                 {categories.length}
               </span>
             </button>
@@ -234,7 +233,7 @@ export const Billing = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
           {filteredProducts.map((product) => {
             const inCart = cart.find((c) => c.id === product.id);
 
@@ -357,7 +356,7 @@ export const Billing = () => {
 
       {/* RIGHT COLUMN: CART & CHECKOUT PANEL (RICH PURPLE TINTED SECTION) */}
       <div className={`lg:col-span-5 xl:col-span-4 lg:h-full min-h-0 ${mobileTab === 'cart' ? 'block' : 'hidden lg:block'}`}>
-        <div className="bg-gradient-to-b from-purple-100/90 via-purple-50/90 to-purple-100/90 rounded-3xl p-4 shadow-xl border-2 border-purple-300/90 flex flex-col h-full space-y-3 overflow-hidden justify-between">
+        <div className="bg-gradient-to-b from-purple-100/90 via-purple-50/90 to-purple-100/90 rounded-3xl p-3.5 sm:p-4 shadow-xl border-2 border-purple-300/90 flex flex-col lg:h-full space-y-3 overflow-y-auto lg:overflow-hidden justify-between pb-3 sm:pb-4">
           {/* Cart Header */}
           <div className="flex items-center justify-between pb-2.5 border-b border-purple-100 shrink-0">
             <div className="flex items-center space-x-2.5">
@@ -403,54 +402,54 @@ export const Billing = () => {
             </span>
           </div>
 
-          {/* Cart Items List (Strictly fits 3 full items in screen view, remaining scrollable) */}
-          <div className="max-h-[225px] sm:max-h-[250px] lg:max-h-[300px] overflow-y-auto space-y-2.5 pr-1 scrollbar-thin shrink-0">
+          {/* Cart Items List (Compact row height so 3 full items fit in mobile screen view) */}
+          <div className="max-h-[170px] sm:max-h-[220px] lg:max-h-[280px] overflow-y-auto space-y-1.5 sm:space-y-2 pr-1 scrollbar-thin shrink-0">
             {cart.length === 0 ? (
-              <div className="py-12 text-center text-slate-400 space-y-2">
-                <Coffee className="w-12 h-12 text-slate-200 mx-auto" />
-                <p className="text-base font-extrabold text-slate-700">Your cart is empty</p>
-                <p className="text-xs sm:text-sm font-medium text-slate-500">Click on items from the menu to add to billing.</p>
+              <div className="py-10 text-center text-slate-400 space-y-2">
+                <Coffee className="w-10 h-10 text-slate-200 mx-auto" />
+                <p className="text-sm font-extrabold text-slate-700">Your cart is empty</p>
+                <p className="text-xs font-medium text-slate-500">Click on items from the menu to add to billing.</p>
               </div>
             ) : (
               cart.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-slate-50 border border-purple-100 p-3 rounded-2xl flex items-center justify-between space-x-2 shadow-sm"
+                  className="bg-slate-50 border border-purple-100 p-2 sm:p-2.5 rounded-2xl flex items-center justify-between space-x-2 shadow-sm"
                 >
-                  <div className="flex-1 pr-1">
-                    <h4 className="text-sm sm:text-base font-black text-slate-900 leading-tight">{item.name}</h4>
-                    <p className="text-xs sm:text-sm font-extrabold text-slate-600">₹{item.price} × {item.qty}</p>
+                  <div className="flex-1 pr-1 min-w-0">
+                    <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate">{item.name}</h4>
+                    <p className="text-[11px] sm:text-xs font-bold text-slate-600">₹{item.price} × {item.qty}</p>
                   </div>
 
                   {/* Quantity Controls */}
-                  <div className="flex items-center space-x-1 bg-white border border-purple-200 rounded-xl p-1 shadow-sm shrink-0">
+                  <div className="flex items-center space-x-1 bg-white border border-purple-200 rounded-xl p-0.5 sm:p-1 shadow-sm shrink-0">
                     <button
                       onClick={() => updateCartQty(item.id, -1)}
-                      className="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 border border-rose-300 hover:bg-rose-600 hover:text-white flex items-center justify-center font-black transition-colors"
+                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-rose-100 text-rose-700 border border-rose-300 hover:bg-rose-600 hover:text-white flex items-center justify-center font-black transition-colors"
                       title="Decrease quantity"
                     >
-                      <Minus className="w-3.5 h-3.5" />
+                      <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </button>
-                    <span className="text-sm sm:text-base font-black text-slate-900 px-2">{item.qty}</span>
+                    <span className="text-xs sm:text-sm font-black text-slate-900 px-1.5">{item.qty}</span>
                     <button
                       onClick={() => updateCartQty(item.id, 1)}
-                      className="w-7 h-7 rounded-lg bg-brand-primary hover:bg-brand-hover text-white flex items-center justify-center font-black transition-colors shadow-sm"
+                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-brand-primary hover:bg-brand-hover text-white flex items-center justify-center font-black transition-colors shadow-sm"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </button>
                   </div>
 
-                  <span className="text-sm sm:text-base font-black text-slate-900 w-16 text-right shrink-0">
+                  <span className="text-xs sm:text-sm font-black text-slate-900 w-14 sm:w-16 text-right shrink-0">
                     ₹{item.price * item.qty}
                   </span>
 
                   <button
                     type="button"
                     onClick={() => removeFromCart(item.id)}
-                    className="p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 rounded-xl transition-all duration-200 shrink-0 active:scale-95 shadow-xs"
+                    className="p-1.5 sm:p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 rounded-xl transition-all duration-200 shrink-0 active:scale-95 shadow-xs"
                     title="Remove item from cart"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                   </button>
                 </div>
               ))
@@ -543,29 +542,6 @@ export const Billing = () => {
         </div>
       </div>
       </div>
-
-      {/* 🚀 STICKY FLOATING MOBILE CART BAR (lg:hidden) - Visible when products selected & on catalog tab */}
-      {totalCartCount > 0 && mobileTab === 'catalog' && (
-        <div className="fixed bottom-20 left-4 right-4 z-40 lg:hidden bg-gradient-to-r from-brand-dark via-purple-950 to-brand-dark text-white p-3.5 rounded-2xl shadow-2xl border border-purple-400/40 flex items-center justify-between animate-slide-up">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-primary text-white flex items-center justify-center font-black shadow-purple-glow">
-              <ShoppingCart className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs text-purple-300 font-bold uppercase">{totalCartCount} items selected</p>
-              <p className="text-base font-black text-white">Total: ₹{grandTotal}</p>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setMobileTab('cart')}
-            className="py-2.5 px-4 bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-hover text-white font-black text-xs sm:text-sm rounded-xl shadow-purple-glow flex items-center space-x-1.5"
-          >
-            <span>View Cart & Pay</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      )}
 
       {/* MODALS */}
       <PaymentModal

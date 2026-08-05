@@ -376,15 +376,15 @@ export const Products = () => {
 
           {/* Desktop HTML Table View (hidden md:block) */}
           <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-purple-50/70 text-slate-700 uppercase text-xs font-black border-b border-purple-100">
-                  <th className="py-3.5 px-4">Item Details</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Price</th>
-                  <th className="py-3.5 px-4">Cost</th>
-                  <th className="py-3.5 px-4">Stock</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                <tr className="bg-purple-50/80 text-slate-800 uppercase text-sm font-black tracking-wider border-b border-purple-200">
+                  <th className="py-4 px-4">Item Details</th>
+                  <th className="py-4 px-4">Category</th>
+                  <th className="py-4 px-4">Price</th>
+                  <th className="py-4 px-4">Cost</th>
+                  <th className="py-4 px-4">Stock</th>
+                  <th className="py-4 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-extrabold">

@@ -46,7 +46,7 @@ export const Header = ({ onOpenMobileDrawer }) => {
   const titleObj = getPageTitle();
 
   return (
-    <header className="sticky top-0 z-30 bg-gradient-to-r from-brand-dark via-purple-950 to-brand-dark text-white border-b border-purple-900/60 px-3 py-2.5 sm:px-4 sm:py-3 lg:px-6 flex items-center justify-between shadow-lg">
+    <header className="sticky top-0 z-30 bg-gradient-to-r from-brand-dark via-purple-950 to-brand-dark text-white border-b border-purple-900/60 px-2 py-2 sm:px-4 sm:py-3 lg:px-6 flex items-center justify-between shadow-lg">
       {/* Left: Mobile Drawer Button & Title */}
       <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
         <button
