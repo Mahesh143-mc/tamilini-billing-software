@@ -20,9 +20,9 @@ export const Reports = () => {
         <div>
           <h1 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <BarChart3 className="w-6 h-6 text-brand-primary" />
-            <span>Sales & GST Financial Reports</span>
+            <span>Sales & Revenue Financial Reports</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Generate itemized revenue, tax breakdown, and cashier summaries.</p>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Generate itemized revenue and cashier summaries.</p>
         </div>
 
         {/* Export Buttons */}
@@ -45,17 +45,11 @@ export const Reports = () => {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white p-5 rounded-3xl border border-purple-100 shadow-soft">
           <p className="text-sm text-slate-600 font-extrabold">Total Gross Revenue</p>
           <h3 className="text-3xl font-black text-slate-900 mt-1">₹{totalSales.toLocaleString('en-IN')}</h3>
-          <p className="text-xs text-emerald-600 font-bold mt-1">Inclusive of GST & Discounts</p>
-        </div>
-
-        <div className="bg-white p-5 rounded-3xl border border-purple-100 shadow-soft">
-          <p className="text-sm text-slate-600 font-extrabold">Total Output GST Tax</p>
-          <h3 className="text-3xl font-black text-brand-primary mt-1">₹{totalTax.toLocaleString('en-IN')}</h3>
-          <p className="text-xs text-purple-700 font-bold mt-1">CGST + SGST (5%/18%)</p>
+          <p className="text-xs text-emerald-600 font-bold mt-1">Net Sales Revenue</p>
         </div>
 
         <div className="bg-white p-5 rounded-3xl border border-purple-100 shadow-soft">
@@ -77,7 +71,6 @@ export const Reports = () => {
               <th className="py-3.5 px-4">Timestamp</th>
               <th className="py-3.5 px-4">Customer Name</th>
               <th className="py-3.5 px-4">Payment Method</th>
-              <th className="py-3.5 px-4">Tax (GST)</th>
               <th className="py-3.5 px-4 text-right">Grand Total</th>
             </tr>
           </thead>
@@ -88,7 +81,6 @@ export const Reports = () => {
                 <td className="py-3.5 px-4 text-slate-600 font-medium">{b.timestamp}</td>
                 <td className="py-3.5 px-4 font-black text-slate-900">{b.customerName}</td>
                 <td className="py-3.5 px-4 text-slate-700">{b.paymentMode}</td>
-                <td className="py-3.5 px-4 text-slate-700">₹{b.tax}</td>
                 <td className="py-3.5 px-4 text-right font-black text-slate-900 text-base">₹{b.total}</td>
               </tr>
             ))}

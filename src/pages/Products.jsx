@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Search,
   Plus,
@@ -29,6 +29,10 @@ export const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const categoryRowRef = useRef(null);
 
+  // Pagination State (10 items per page)
+  const ITEMS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
   // Category Modal State
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [categorySearchQuery, setCategorySearchQuery] = useState('');
@@ -41,6 +45,11 @@ export const Products = () => {
       });
     }
   };
+
+  // Reset page to 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,6 +79,11 @@ export const Products = () => {
       selectedCategory === 'all' || p.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // Calculate pagination variables (10 items per page)
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handleOpenAdd = () => {
     setEditingProd(null);
@@ -184,8 +198,8 @@ export const Products = () => {
           />
         </div>
 
-        {/* Category Filter Controls: Scroll Left + Chips + Scroll Right */}
-        <div className="flex items-center space-x-2 w-full md:w-auto min-w-0">
+        {/* Category Filter Controls: Scroll Left + Chips + Scroll Right (Hidden on Mobile, Visible sm:flex) */}
+        <div className="hidden sm:flex items-center space-x-2 w-full md:w-auto min-w-0">
           {/* Scroll Left Button */}
           <button
             type="button"
@@ -231,7 +245,7 @@ export const Products = () => {
       {/* View Mode: Grid */}
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-4">
-          {filteredProducts.map((p) => (
+          {paginatedProducts.map((p) => (
             <div
               key={p.id}
               className="bg-white rounded-3xl p-3.5 border border-purple-100 shadow-soft hover:shadow-card-hover hover:border-purple-200 transition-all flex flex-col justify-between"
@@ -282,67 +296,193 @@ export const Products = () => {
           ))}
         </div>
       ) : (
-        /* View Mode: Table */
-        <div className="bg-white rounded-3xl border border-purple-100 shadow-soft overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="bg-purple-50/70 text-slate-700 uppercase text-xs font-black border-b border-purple-100">
-                <th className="py-3.5 px-4">Item Details</th>
-                <th className="py-3.5 px-4">Category</th>
-                <th className="py-3.5 px-4">Price</th>
-                <th className="py-3.5 px-4">Cost</th>
-                <th className="py-3.5 px-4">Stock</th>
-                <th className="py-3.5 px-4">GST Rate</th>
-                <th className="py-3.5 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 font-extrabold">
-              {filteredProducts.map((p) => (
-                <tr key={p.id} className="hover:bg-purple-50/40 transition-colors">
-                  <td className="py-3.5 px-4 flex items-center space-x-3">
-                    <img src={p.image} alt={p.name} className="w-11 h-11 rounded-xl object-cover" />
-                    <div>
-                      <p className="font-black text-slate-900 text-sm sm:text-base">{p.name}</p>
-                      <p className="text-xs text-brand-primary font-black">{p.tamilName}</p>
+        /* View Mode: Table (Mobile-friendly row cards + Desktop HTML table) */
+        <div className="bg-white rounded-3xl border border-purple-100 shadow-soft overflow-hidden">
+          {/* Mobile List Row Cards (md:hidden) */}
+          <div className="md:hidden divide-y divide-purple-100">
+            {paginatedProducts.map((p) => (
+              <div
+                key={p.id}
+                className="p-3.5 flex items-center justify-between space-x-3 hover:bg-purple-50/50 transition-colors"
+              >
+                <div className="flex items-center space-x-3 min-w-0 flex-1">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="w-12 h-12 rounded-2xl object-cover shrink-0 border border-purple-100"
+                  />
+                  <div className="min-w-0 flex-1 space-y-1">
+                    {/* Line 1: English name */}
+                    <h4 className="font-black text-slate-900 text-sm sm:text-base truncate leading-tight">
+                      {p.name}
+                    </h4>
+
+                    {/* Line 2: Tamil name */}
+                    {p.tamilName && (
+                      <p className="text-xs text-brand-primary font-black truncate">
+                        {p.tamilName}
+                      </p>
+                    )}
+
+                    {/* Line 3: Price & Cost */}
+                    <div className="flex items-center space-x-2 pt-0.5">
+                      <span className="text-xs font-black text-slate-900">
+                        Price: ₹{p.price}
+                      </span>
+                      {p.costPrice && (
+                        <span className="text-xs font-bold text-slate-500">
+                          • Cost: ₹{p.costPrice}
+                        </span>
+                      )}
                     </div>
-                  </td>
-                  <td className="py-3.5 px-4 text-slate-700">{p.category}</td>
-                  <td className="py-3.5 px-4 font-black text-slate-900 text-base">₹{p.price}</td>
-                  <td className="py-3.5 px-4 text-slate-600">₹{p.costPrice || '-'}</td>
-                  <td className="py-3.5 px-4">
-                    <span
-                      className={`text-xs font-black px-3 py-1 rounded-full ${
-                        p.stock <= p.lowStockThreshold
-                          ? 'bg-rose-100 text-rose-800 border border-rose-300'
-                          : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                      }`}
-                    >
-                      {p.stock} {p.unit}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-slate-700">{p.gstRate}%</td>
-                  <td className="py-3.5 px-4 text-right space-x-1.5">
-                    <button
-                      onClick={() => handleOpenEdit(p)}
-                      className="p-2 text-brand-primary bg-purple-50 hover:bg-brand-primary hover:text-white border border-purple-200 rounded-xl transition-all duration-200 active:scale-95 shadow-xs"
-                      title="Edit Product Item"
-                    >
-                      <Edit className="w-4.5 h-4.5" />
-                    </button>
-                    <button
-                      onClick={() => deleteProduct(p.id)}
-                      className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-600 hover:text-white border border-rose-200 rounded-xl transition-all duration-200 active:scale-95 shadow-xs"
-                      title="Delete Product Item"
-                    >
-                      <Trash2 className="w-4.5 h-4.5" />
-                    </button>
-                  </td>
+
+                    {/* Line 4: Category name & Stock */}
+                    <div className="flex items-center space-x-2 pt-0.5">
+                      <span className="bg-purple-100 text-brand-primary text-[10px] font-black px-2 py-0.5 rounded-md border border-purple-200 shrink-0">
+                        {p.category}
+                      </span>
+                      <span
+                        className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${
+                          p.stock <= p.lowStockThreshold
+                            ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                            : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                        }`}
+                      >
+                        Stock: {p.stock}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-1.5 shrink-0">
+                  <button
+                    onClick={() => handleOpenEdit(p)}
+                    className="p-2 text-brand-primary bg-purple-50 hover:bg-brand-primary hover:text-white border border-purple-200 rounded-xl transition-all shadow-xs"
+                    title="Edit Item"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => deleteProduct(p.id)}
+                    className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-600 hover:text-white border border-rose-200 rounded-xl transition-all shadow-xs"
+                    title="Delete Item"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop HTML Table View (hidden md:block) */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="bg-purple-50/70 text-slate-700 uppercase text-xs font-black border-b border-purple-100">
+                  <th className="py-3.5 px-4">Item Details</th>
+                  <th className="py-3.5 px-4">Category</th>
+                  <th className="py-3.5 px-4">Price</th>
+                  <th className="py-3.5 px-4">Cost</th>
+                  <th className="py-3.5 px-4">Stock</th>
+                  <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100 font-extrabold">
+                {paginatedProducts.map((p) => (
+                  <tr key={p.id} className="hover:bg-purple-50/40 transition-colors">
+                    <td className="py-3.5 px-4 flex items-center space-x-3">
+                      <img src={p.image} alt={p.name} className="w-11 h-11 rounded-xl object-cover" />
+                      <div>
+                        <p className="font-black text-slate-900 text-sm sm:text-base">{p.name}</p>
+                        <p className="text-xs text-brand-primary font-black">{p.tamilName}</p>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4 text-slate-700">{p.category}</td>
+                    <td className="py-3.5 px-4 font-black text-slate-900 text-base">₹{p.price}</td>
+                    <td className="py-3.5 px-4 text-slate-600">₹{p.costPrice || '-'}</td>
+                    <td className="py-3.5 px-4">
+                      <span
+                        className={`text-xs font-black px-3 py-1 rounded-full ${
+                          p.stock <= p.lowStockThreshold
+                            ? 'bg-rose-100 text-rose-800 border border-rose-300'
+                            : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                        }`}
+                      >
+                        {p.stock} {p.unit}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-right space-x-1.5">
+                      <button
+                        onClick={() => handleOpenEdit(p)}
+                        className="p-2 text-brand-primary bg-purple-50 hover:bg-brand-primary hover:text-white border border-purple-200 rounded-xl transition-all duration-200 active:scale-95 shadow-xs"
+                        title="Edit Product Item"
+                      >
+                        <Edit className="w-4.5 h-4.5" />
+                      </button>
+                      <button
+                        onClick={() => deleteProduct(p.id)}
+                        className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-600 hover:text-white border border-rose-200 rounded-xl transition-all duration-200 active:scale-95 shadow-xs"
+                        title="Delete Product Item"
+                      >
+                        <Trash2 className="w-4.5 h-4.5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
+
+      {/* Pagination Control Bar (10 items per page) */}
+      <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-purple-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="text-xs sm:text-sm font-bold text-slate-600">
+          Showing <span className="font-black text-slate-900">{filteredProducts.length === 0 ? 0 : startIndex + 1}</span> to{' '}
+          <span className="font-black text-slate-900">{Math.min(startIndex + ITEMS_PER_PAGE, filteredProducts.length)}</span> of{' '}
+          <span className="font-black text-slate-900">{filteredProducts.length}</span> items
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-700 hover:bg-purple-100 hover:text-brand-primary text-xs sm:text-sm font-black transition-all disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 flex items-center space-x-1"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Prev</span>
+          </button>
+
+          {/* Page Number Pills */}
+          <div className="flex items-center space-x-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`w-8 h-8 rounded-xl text-xs font-black transition-all ${
+                  currentPage === page
+                    ? 'bg-brand-primary text-white shadow-purple-glow scale-[1.05]'
+                    : 'bg-white text-slate-700 hover:bg-purple-50 border border-slate-200'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-700 hover:bg-purple-100 hover:text-brand-primary text-xs sm:text-sm font-black transition-all disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 flex items-center space-x-1"
+          >
+            <span>Next</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
       {/* Add / Edit Product Modal */}
       <Modal
@@ -449,23 +589,23 @@ export const Products = () => {
         onClose={() => setIsCategoryModalOpen(false)}
         title="Select Menu Category Filter"
         icon={FolderTree}
-        maxWidth="max-w-md"
+        maxWidth="max-w-lg"
       >
         <div className="space-y-4">
           {/* Category Search Input */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={categorySearchQuery}
               onChange={(e) => setCategorySearchQuery(e.target.value)}
               placeholder="Search category name..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-purple-200 rounded-2xl text-xs sm:text-sm font-bold focus:border-brand-primary focus:outline-none"
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-purple-200 rounded-2xl text-sm sm:text-base font-bold focus:border-brand-primary focus:outline-none shadow-inner"
             />
           </div>
 
           {/* Categories Grid List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-80 overflow-y-auto pr-1 scrollbar-thin">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-96 overflow-y-auto pr-1 scrollbar-thin">
             {categories
               .filter((cat) => cat.name.toLowerCase().includes(categorySearchQuery.toLowerCase()))
               .map((cat) => {
@@ -481,18 +621,18 @@ export const Products = () => {
                       setSelectedCategory(cat.id);
                       setIsCategoryModalOpen(false);
                     }}
-                    className={`p-3 rounded-2xl border cursor-pointer flex items-center justify-between transition-all duration-200 ${
+                    className={`p-3.5 sm:p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all duration-200 ${
                       isSelected
                         ? 'bg-gradient-to-r from-brand-primary to-brand-secondary text-white border-brand-primary shadow-purple-glow scale-[1.02]'
                         : 'bg-white border-purple-100 hover:border-purple-300 hover:bg-purple-50 text-slate-800'
                     }`}
                   >
-                    <span className="text-xs sm:text-sm font-black truncate pr-1">{cat.name}</span>
-                    <div className="flex items-center space-x-1.5 shrink-0">
-                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                    <span className="text-sm sm:text-base font-black truncate pr-2">{cat.name}</span>
+                    <div className="flex items-center space-x-2 shrink-0">
+                      <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${isSelected ? 'bg-white/25 text-white font-black' : 'bg-purple-100/70 text-purple-800'}`}>
                         {prodCount}
                       </span>
-                      {isSelected && <Check className="w-4 h-4 text-white" />}
+                      {isSelected && <Check className="w-4.5 h-4.5 text-white" />}
                     </div>
                   </div>
                 );

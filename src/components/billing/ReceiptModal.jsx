@@ -33,7 +33,7 @@ export const ReceiptModal = ({ isOpen, onClose, bill }) => {
             </h2>
             <p className="text-[11px] text-slate-600 leading-tight">{settings.tagline}</p>
             <p className="text-[10px] text-slate-500 mt-1">{settings.address}</p>
-            <p className="text-[10px] text-slate-500">Ph: {settings.phone} | GSTIN: {settings.gstin}</p>
+            <p className="text-[10px] text-slate-500">Ph: {settings.phone}</p>
           </div>
 
           {/* Bill Meta */}
@@ -84,12 +84,6 @@ export const ReceiptModal = ({ isOpen, onClose, bill }) => {
               <div className="flex justify-between text-emerald-600 font-semibold">
                 <span>Discount</span>
                 <span>-₹{bill.discount?.toLocaleString('en-IN')}</span>
-              </div>
-            )}
-            {bill.tax > 0 && (
-              <div className="flex justify-between text-slate-600">
-                <span>Estimated GST</span>
-                <span>₹{bill.tax?.toLocaleString('en-IN')}</span>
               </div>
             )}
             <div className="flex justify-between text-sm font-extrabold pt-1.5 border-t border-slate-400 text-slate-900">

@@ -21,14 +21,14 @@ export const ToastContainer = () => {
   };
 
   return (
-    <div className="fixed bottom-20 lg:bottom-6 right-4 z-50 flex flex-col space-y-2.5 max-w-sm w-full pointer-events-none px-2">
+    <div className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-50 flex flex-col space-y-2.5 max-w-md w-[90%] sm:w-full pointer-events-none px-2 items-center">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="pointer-events-auto flex items-center space-x-3 bg-brand-dark text-white px-4 py-3 rounded-2xl shadow-purple-lg border border-purple-800/80 animate-slide-up"
+          className="pointer-events-auto flex items-center space-x-3 bg-brand-dark/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-purple-glow border border-purple-500/40 animate-slide-down w-full"
         >
           {getIcon(toast.type)}
-          <span className="text-xs sm:text-sm font-medium tracking-wide leading-snug flex-1">
+          <span className="text-xs sm:text-sm font-bold tracking-wide leading-snug flex-1">
             {toast.message}
           </span>
         </div>

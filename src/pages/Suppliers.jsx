@@ -13,7 +13,7 @@ export const Suppliers = () => {
             <Truck className="w-6 h-6 text-brand-primary" />
             <span>Supplier & Vendor Portal</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Manage flour, dairy, and essence vendor accounts & GST invoices.</p>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Manage flour, dairy, and essence vendor accounts.</p>
         </div>
       </div>
 
@@ -22,7 +22,6 @@ export const Suppliers = () => {
           <thead>
             <tr className="bg-purple-50/70 text-slate-700 uppercase text-xs font-extrabold border-b border-purple-100">
               <th className="py-3.5 px-4">Company</th>
-              <th className="py-3.5 px-4">GSTIN</th>
               <th className="py-3.5 px-4">Category</th>
               <th className="py-3.5 px-4">Contact</th>
               <th className="py-3.5 px-4">Payment Due</th>
@@ -33,7 +32,6 @@ export const Suppliers = () => {
             {suppliers.map((s) => (
               <tr key={s.id} className="hover:bg-purple-50/40 transition-colors">
                 <td className="py-3.5 px-4 font-black text-slate-900 text-sm sm:text-base">{s.company}</td>
-                <td className="py-3.5 px-4 font-mono font-bold text-slate-700">{s.gstin}</td>
                 <td className="py-3.5 px-4 text-slate-700">{s.category}</td>
                 <td className="py-3.5 px-4 text-slate-800">{s.contactPerson} ({s.phone})</td>
                 <td className="py-3.5 px-4 font-black text-slate-900 text-base">₹{s.paymentDue?.toLocaleString()}</td>

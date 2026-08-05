@@ -186,8 +186,8 @@ export const Billing = () => {
             </button>
           </div>
 
-          {/* Category Filter Bar: Scroll Left + Chips + Scroll Right */}
-          <div className="flex items-center space-x-2 w-full min-w-0">
+          {/* Category Filter Bar: Scroll Left + Chips + Scroll Right (Hidden on Mobile, Visible sm:flex) */}
+          <div className="hidden sm:flex items-center space-x-2 w-full min-w-0">
             {/* Scroll Left Button */}
             <button
               type="button"
@@ -596,23 +596,23 @@ export const Billing = () => {
         onClose={() => setIsCategoryModalOpen(false)}
         title="Select Menu Category Filter"
         icon={FolderTree}
-        maxWidth="max-w-md"
+        maxWidth="max-w-lg"
       >
         <div className="space-y-4">
           {/* Category Search Input */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={categorySearchQuery}
               onChange={(e) => setCategorySearchQuery(e.target.value)}
               placeholder="Search category name..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-purple-200 rounded-2xl text-xs sm:text-sm font-bold focus:border-brand-primary focus:outline-none"
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-purple-200 rounded-2xl text-sm sm:text-base font-bold focus:border-brand-primary focus:outline-none shadow-inner"
             />
           </div>
 
           {/* Categories Grid List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-80 overflow-y-auto pr-1 scrollbar-thin">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-96 overflow-y-auto pr-1 scrollbar-thin">
             {categories
               .filter((cat) => cat.name.toLowerCase().includes(categorySearchQuery.toLowerCase()))
               .map((cat) => {
@@ -628,18 +628,18 @@ export const Billing = () => {
                       setSelectedCategory(cat.id);
                       setIsCategoryModalOpen(false);
                     }}
-                    className={`p-3 rounded-2xl border cursor-pointer flex items-center justify-between transition-all duration-200 ${
+                    className={`p-3.5 sm:p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all duration-200 ${
                       isSelected
                         ? 'bg-gradient-to-r from-brand-primary to-brand-secondary text-white border-brand-primary shadow-purple-glow scale-[1.02]'
                         : 'bg-white border-purple-100 hover:border-purple-300 hover:bg-purple-50 text-slate-800'
                     }`}
                   >
-                    <span className="text-xs sm:text-sm font-black truncate pr-1">{cat.name}</span>
-                    <div className="flex items-center space-x-1.5 shrink-0">
-                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                    <span className="text-sm sm:text-base font-black truncate pr-2">{cat.name}</span>
+                    <div className="flex items-center space-x-2 shrink-0">
+                      <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${isSelected ? 'bg-white/25 text-white font-black' : 'bg-purple-100/70 text-purple-800'}`}>
                         {prodCount}
                       </span>
-                      {isSelected && <Check className="w-4 h-4 text-white" />}
+                      {isSelected && <Check className="w-4.5 h-4.5 text-white" />}
                     </div>
                   </div>
                 );

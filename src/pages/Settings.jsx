@@ -30,7 +30,7 @@ export const Settings = () => {
             <SettingsIcon className="w-6 h-6 text-brand-primary" />
             <span>Shop & System Configuration</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Configure receipt headers, GSTIN, thermal printer, and backup data.</p>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">Configure receipt headers, thermal printer, and backup data.</p>
         </div>
       </div>
 
@@ -59,15 +59,6 @@ export const Settings = () => {
                 value={formData.tagline}
                 onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
                 className="w-full p-3 bg-slate-50 border border-purple-200 rounded-xl font-medium text-slate-800 text-sm"
-              />
-            </div>
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">GSTIN Number</label>
-              <input
-                type="text"
-                value={formData.gstin}
-                onChange={(e) => setFormData({ ...formData, gstin: e.target.value })}
-                className="w-full p-3 bg-slate-50 border border-purple-200 rounded-xl font-mono font-bold text-slate-900 text-sm"
               />
             </div>
             <div>
