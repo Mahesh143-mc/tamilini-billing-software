@@ -56,6 +56,18 @@ export const Billing = () => {
   // Search & Category Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [categorySearchQuery, setCategorySearchQuery] = useState('');
+  const categoryRowRef = useRef(null);
+
+  const scrollCategoryRow = (direction) => {
+    if (categoryRowRef.current) {
+      categoryRowRef.current.scrollBy({
+        left: direction === 'left' ? -220 : 220,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Mobile View Toggle: 'catalog' | 'cart'
   const [mobileTab, setMobileTab] = useState('catalog');
