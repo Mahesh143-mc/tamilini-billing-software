@@ -403,8 +403,8 @@ export const Billing = () => {
             </span>
           </div>
 
-          {/* Cart Items List (SCROLLS INDEPENDENTLY IF MANY ITEMS IN CART) */}
-          <div className="flex-1 overflow-y-auto min-h-0 space-y-2.5 pr-1 scrollbar-thin">
+          {/* Cart Items List (Strictly fits 3 full items in screen view, remaining scrollable) */}
+          <div className="max-h-[225px] sm:max-h-[250px] lg:max-h-[300px] overflow-y-auto space-y-2.5 pr-1 scrollbar-thin shrink-0">
             {cart.length === 0 ? (
               <div className="py-12 text-center text-slate-400 space-y-2">
                 <Coffee className="w-12 h-12 text-slate-200 mx-auto" />
